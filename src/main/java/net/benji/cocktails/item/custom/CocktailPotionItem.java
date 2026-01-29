@@ -18,10 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CocktailPotionItem extends PotionItem {
+    private static final List<String> nonEffects = new ArrayList<>(List.of("awkward", "empty", "mundane", "thick", "water"));
+
     public CocktailPotionItem(Properties properties) {
         super(properties);
     }
 
+    @Override
     public @NotNull ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
         Player player = livingEntity instanceof Player ? (Player)livingEntity : null;
         if (player instanceof ServerPlayer) {
@@ -49,12 +52,19 @@ public class CocktailPotionItem extends PotionItem {
         return itemStack;
     }
 
+    @Override
     public int getUseDuration(ItemStack itemStack) {
         return 16;
     }
 
+    @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
         PotionUtils.addPotionTooltip(halvePotionTimes(PotionUtils.getMobEffects(itemStack)), list, 1.0F);
+    }
+
+    @Override
+    public @NotNull Component getName(ItemStack itemStack) {
+        return Component.literal(format(PotionUtils.getPotion(itemStack).getName("")));
     }
 
     public List<MobEffectInstance> halvePotionTimes(List<MobEffectInstance> effects) {
@@ -75,5 +85,41 @@ public class CocktailPotionItem extends PotionItem {
                 mobEffectInstance.isAmbient(),
                 mobEffectInstance.isVisible(),
                 mobEffectInstance.showIcon());
+    }
+
+    public static String format(String input) {
+        if (nonEffects.contains(input)) {
+            return formatNonEffect(input);
+        }
+        return formatEffect(input);
+    }
+
+    public static String formatEffect(String input) {
+        StringBuilder result = new StringBuilder();
+        result.append("Cocktail of ");
+        boolean nextLetterUppercase = true;
+
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+
+            if (c == '_' || c == '-') {
+                result.append(' ');
+                nextLetterUppercase = true;
+            }
+            else if (nextLetterUppercase && Character.isLetter(c)) {
+                result.append(Character.toUpperCase(c));
+                nextLetterUppercase = false;
+            }
+            else {
+                result.append(c);
+                nextLetterUppercase = false;
+            }
+        }
+
+        return result.toString();
+    }
+
+    public static String formatNonEffect(String input) {
+        return Character.toUpperCase(input.charAt(0)) + input.substring(1) + " Cocktail";
     }
 }

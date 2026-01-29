@@ -13,8 +13,9 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 
 public class PotionCocktailCreativeModeTabs {
-    public static final ResourceKey<CreativeModeTab> POTION_COKTAILS_TAB = createKey("cocktails_itemgroup");
+    public static final ResourceKey<CreativeModeTab> POTION_COCKTAILS_TAB = createKey("creative_mode_tab.cocktails");
 
+    @SuppressWarnings("all")
     private static ResourceKey<CreativeModeTab> createKey(String name) {
         return ResourceKey.create(Registries.CREATIVE_MODE_TAB, new ResourceLocation(PotionCocktailsFabric.MOD_ID, name));
     }
@@ -22,13 +23,11 @@ public class PotionCocktailCreativeModeTabs {
     public static void bootstrap(Registry<CreativeModeTab> registry) {
         Registry.register(
                 registry,
-                POTION_COKTAILS_TAB,
+                POTION_COCKTAILS_TAB,
                 CreativeModeTab.builder(CreativeModeTab.Row.TOP, 7)
-                        .title(Component.literal("Potion Cocktails"))
+                        .title(Component.translatable("creative_mode_tab.cocktails"))
                         .icon(PotionCocktailItems.COCKTAIL_POTION::getDefaultInstance)
-                        .displayItems(((itemDisplayParameters, output) -> {
-                            itemDisplayParameters.holders().lookup(Registries.POTION).ifPresent((holderLookup) -> holderLookup.listElements().filter((reference) -> !reference.is(Potions.EMPTY_ID)).map((reference) -> PotionUtils.setPotion(new ItemStack(PotionCocktailItems.COCKTAIL_POTION), reference.value())).forEach((itemStack) -> output.accept(itemStack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS)));
-                        })).build()
+                        .displayItems(((itemDisplayParameters, output) -> itemDisplayParameters.holders().lookup(Registries.POTION).ifPresent((holderLookup) -> holderLookup.listElements().filter((reference) -> !reference.is(Potions.EMPTY_ID)).map((reference) -> PotionUtils.setPotion(new ItemStack(PotionCocktailItems.COCKTAIL_POTION), reference.value())).forEach((itemStack) -> output.accept(itemStack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS))))).build()
         );
     }
 
