@@ -11,7 +11,7 @@
 		"homepage": "https://github.com/CrazyBenji",
 		"sources": "https://github.com/CrazyBenji/Potion-Cocktails-Fabric"
 	},
-	"license": "CC0-1.0",
+	"license": "CC-BY",
 	"icon": "assets/cocktails/icon.png",
 	"environment": "*",
 	"entrypoints": {
