@@ -3,15 +3,15 @@
 	"id": "cocktails",
 	"version": "${version}",
 	"name": "Potion Cocktails",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Adds a new potion type!",
 	"authors": [
-		"Me!"
+		"CrazyBenji"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/CrazyBenji",
+		"sources": "https://github.com/CrazyBenji/Potion-Cocktails-Fabric"
 	},
-	"license": "CC0-1.0",
+	"license": "CC-BY",
 	"icon": "assets/cocktails/icon.png",
 	"environment": "*",
 	"entrypoints": {
