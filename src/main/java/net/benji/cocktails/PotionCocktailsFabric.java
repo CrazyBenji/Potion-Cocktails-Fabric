@@ -4,9 +4,8 @@ import net.benji.cocktails.item.PotionCocktailCreativeModeTabs;
 import net.benji.cocktails.item.PotionCocktailItems;
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistry;
+import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,8 @@ public class PotionCocktailsFabric implements ModInitializer {
 	public void onInitialize() {
 		PotionCocktailItems.registerItems();
 		PotionCocktailCreativeModeTabs.registerCreativeModeTabs();
-
-		FabricBrewingRecipeRegistry.registerItemRecipe((PotionItem)Items.POTION, Ingredient.of(Items.AMETHYST_SHARD), (PotionItem)PotionCocktailItems.COCKTAIL_POTION);
+		FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
+			builder.registerItemRecipe(Items.POTION, Ingredient.of(Items.AMETHYST_SHARD), PotionCocktailItems.COCKTAIL_POTION);
+		});
 	}
 }

@@ -18,7 +18,7 @@ public class PotionCocktailItems {
 
     public static Item registerItem(String name, Function<Item.Properties, Item> itemFactory, Item.Properties properties) {
         Item item = itemFactory.apply(properties);
-        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(PotionCocktailsFabric.MOD_ID, name), item);
+        Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(PotionCocktailsFabric.MOD_ID, name), item);
 
         return item;
     }

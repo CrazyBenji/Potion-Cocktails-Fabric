@@ -1,6 +1,8 @@
 package net.benji.cocktails.item.custom;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -8,14 +10,15 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CocktailPotionItem extends PotionItem {
     private static final List<String> nonEffects = new ArrayList<>(List.of("awkward", "empty", "mundane", "thick", "water"));
@@ -32,13 +35,14 @@ public class CocktailPotionItem extends PotionItem {
         }
 
         if (!level.isClientSide) {
-            for(MobEffectInstance mobEffectInstance : PotionUtils.getMobEffects(itemStack)) {
-                if (mobEffectInstance.getEffect().isInstantenous()) {
-                    mobEffectInstance.getEffect().applyInstantenousEffect(player, player, livingEntity, mobEffectInstance.getAmplifier(), 1.0F);
+            PotionContents potionContents = itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
+            potionContents.forEachEffect(mobEffectInstance -> {
+                if (mobEffectInstance.getEffect().value().isInstantenous()) {
+                    mobEffectInstance.getEffect().value().applyInstantenousEffect(player, player, livingEntity, mobEffectInstance.getAmplifier(), 1.0F);
                 } else {
                     livingEntity.addEffect(halvePotionTime(mobEffectInstance));
                 }
-            }
+            });
         }
 
         if (player != null) {
@@ -53,28 +57,29 @@ public class CocktailPotionItem extends PotionItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack itemStack) {
+    public int getUseDuration(ItemStack itemStack, LivingEntity livingEntity) {
         return 16;
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        PotionUtils.addPotionTooltip(halvePotionTimes(PotionUtils.getMobEffects(itemStack)), list, 1.0F);
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
+            PotionContents potionContents = itemStack.get(DataComponents.POTION_CONTENTS);
+            if (potionContents != null) {
+                if (potionContents.potion().isPresent()) {
+                    List<MobEffectInstance> mobEffectInstances = new ArrayList<>();
+                    for (MobEffectInstance mobEffectInstance : potionContents.getAllEffects()) {
+                        mobEffectInstances.add(this.halvePotionTime(mobEffectInstance));
+                    }
+                    Potion potion = new Potion();
+                    PotionContents halvedPotionContents = new PotionContents(Optional.of(Holder.direct(potion)), potionContents.customColor(), mobEffectInstances);
+                    halvedPotionContents.addPotionTooltip(list::add, 1.0F, tooltipContext.tickRate());
+                }
+            }
     }
 
     @Override
     public @NotNull Component getName(ItemStack itemStack) {
-        return Component.literal(format(PotionUtils.getPotion(itemStack).getName("")));
-    }
-
-    public List<MobEffectInstance> halvePotionTimes(List<MobEffectInstance> effects) {
-        List<MobEffectInstance> halvedEffects = new ArrayList<>();
-
-        for (MobEffectInstance mobEffectInstance : effects) {
-            halvedEffects.add(halvePotionTime(mobEffectInstance));
-        }
-
-        return halvedEffects;
+        return Component.literal(format(Potion.getName(itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion(), "")));
     }
 
     public MobEffectInstance halvePotionTime(MobEffectInstance mobEffectInstance) {
