@@ -11,6 +11,10 @@ import net.minecraft.world.item.alchemy.PotionContents;
 public class PotionCocktailsClientFabric implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        ColorProviderRegistry.ITEM.register((itemStack, i) -> i > 0 ? -1 : FastColor.ARGB32.opaque(itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor()), PotionCocktailItems.COCKTAIL_POTION);
+        ColorProviderRegistry.ITEM.register(
+                (itemStack, i) -> i > 0 ? -1 :
+                        FastColor.ARGB32.opaque(itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor()),
+                PotionCocktailItems.COCKTAIL_POTION
+        );
     }
 }
