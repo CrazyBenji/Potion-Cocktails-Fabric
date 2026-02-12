@@ -9,6 +9,9 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 public class PotionCocktailsClientFabric implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        ColorProviderRegistry.ITEM.register((itemStack, i) -> i > 0 ? -1 : PotionUtils.getColor(itemStack), PotionCocktailItems.COCKTAIL_POTION);
+        ColorProviderRegistry.ITEM.register(
+                (itemStack, i) -> i > 0 ? -1 :
+                        PotionUtils.getColor(itemStack), PotionCocktailItems.COCKTAIL_POTION
+        );
     }
 }
