@@ -1,5 +1,6 @@
 package net.benji.cocktails;
 
+import net.benji.cocktails.entity.PotionCocktailsEntityTypes;
 import net.benji.cocktails.item.PotionCocktailCreativeModeTabs;
 import net.benji.cocktails.item.PotionCocktailItems;
 import net.fabricmc.api.ModInitializer;
@@ -19,6 +20,7 @@ public class PotionCocktailsFabric implements ModInitializer {
 	public void onInitialize() {
 		PotionCocktailItems.registerItems();
 		PotionCocktailCreativeModeTabs.registerCreativeModeTabs();
+		PotionCocktailsEntityTypes.registerEntityTypes();
 
 		FabricBrewingRecipeRegistry.registerItemRecipe((PotionItem)Items.POTION, Ingredient.of(Items.AMETHYST_SHARD), (PotionItem)PotionCocktailItems.COCKTAIL_POTION);
 	}

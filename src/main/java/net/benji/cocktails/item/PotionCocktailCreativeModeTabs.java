@@ -27,7 +27,10 @@ public class PotionCocktailCreativeModeTabs {
                 CreativeModeTab.builder(CreativeModeTab.Row.TOP, 7)
                         .title(Component.translatable("creative_mode_tab.cocktails"))
                         .icon(PotionCocktailItems.COCKTAIL_POTION::getDefaultInstance)
-                        .displayItems(((itemDisplayParameters, output) -> itemDisplayParameters.holders().lookup(Registries.POTION).ifPresent((holderLookup) -> holderLookup.listElements().filter((reference) -> !reference.is(Potions.EMPTY_ID)).map((reference) -> PotionUtils.setPotion(new ItemStack(PotionCocktailItems.COCKTAIL_POTION), reference.value())).forEach((itemStack) -> output.accept(itemStack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS))))).build()
+                        .displayItems(((itemDisplayParameters, output) -> {
+                            output.accept(PotionCocktailItems.COCKTAIL_GLASS);
+                            itemDisplayParameters.holders().lookup(Registries.POTION).ifPresent((holderLookup) -> holderLookup.listElements().filter((reference) -> !reference.is(Potions.EMPTY_ID)).map((reference) -> PotionUtils.setPotion(new ItemStack(PotionCocktailItems.COCKTAIL_POTION), reference.value())).forEach((itemStack) -> output.accept(itemStack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS)));
+                        })).build()
         );
     }
 

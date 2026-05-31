@@ -1,8 +1,11 @@
 package net.benji.cocktails;
 
+import net.benji.cocktails.entity.PotionCocktailsEntityTypes;
 import net.benji.cocktails.item.PotionCocktailItems;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.item.alchemy.PotionUtils;
 
 @SuppressWarnings("unused")
@@ -12,6 +15,11 @@ public class PotionCocktailsClientFabric implements ClientModInitializer {
         ColorProviderRegistry.ITEM.register(
                 (itemStack, i) -> i > 0 ? -1 :
                         PotionUtils.getColor(itemStack), PotionCocktailItems.COCKTAIL_POTION
+        );
+
+        EntityRendererRegistry.register(
+                PotionCocktailsEntityTypes.COCKTAIL_GLASS,
+                ThrownItemRenderer::new
         );
     }
 }
