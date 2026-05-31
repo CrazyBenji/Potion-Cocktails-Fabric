@@ -51,18 +51,13 @@ public class CocktailPotionItem extends PotionItem {
 
         livingEntity.gameEvent(GameEvent.DRINK);
 
-        if (itemStack.isEmpty()) {
-            return new ItemStack(PotionCocktailItems.COCKTAIL_GLASS);
-        } else {
-            if (livingEntity instanceof Player && !((Player)livingEntity).getAbilities().instabuild) {
-                ItemStack itemStack2 = new ItemStack(PotionCocktailItems.COCKTAIL_GLASS);
-                if (!player.getInventory().add(itemStack2)) {
-                    player.drop(itemStack2, false);
-                }
+        if (livingEntity instanceof Player && !((Player)livingEntity).getAbilities().instabuild) {
+            ItemStack itemStack2 = new ItemStack(PotionCocktailItems.COCKTAIL_GLASS);
+            if (!player.getInventory().add(itemStack2)) {
+                player.drop(itemStack2, false);
             }
-
-            return itemStack;
         }
+        return itemStack;
     }
 
     @Override
