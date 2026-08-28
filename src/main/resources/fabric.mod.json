@@ -29,9 +29,9 @@
 		"cocktails.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.18.4",
-		"minecraft": "~1.21.1",
-		"java": ">=17",
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.3-alpha",
+		"java": ">=25",
 		"fabric-api": "*"
 	}
 }

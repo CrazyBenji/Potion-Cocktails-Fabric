@@ -1,5 +1,5 @@
 {
-  "parent": "item/generated",
+  "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "cocktails:item/cocktail",
     "layer1": "cocktails:item/cocktail_glass"

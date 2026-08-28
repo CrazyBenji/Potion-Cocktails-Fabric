@@ -7,22 +7,19 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 
 public class PotionCocktailCreativeModeTabs {
     public static final ResourceKey<CreativeModeTab> POTION_COCKTAILS_TAB = createKey("creative_mode_tab.cocktails");
 
     @SuppressWarnings("all")
     private static ResourceKey<CreativeModeTab> createKey(String name) {
-        return ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(PotionCocktailsFabric.MOD_ID, name));
+        return ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(PotionCocktailsFabric.MOD_ID, name));
     }
 
     public static void bootstrap(Registry<CreativeModeTab> registry) {
