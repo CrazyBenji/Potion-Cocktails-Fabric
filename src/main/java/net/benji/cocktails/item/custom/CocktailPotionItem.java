@@ -2,7 +2,6 @@ package net.benji.cocktails.item.custom;
 
 import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -36,7 +35,14 @@ public class CocktailPotionItem extends PotionItem {
             player.awardStat(Stats.ITEM_USED.get(this));
         }
 
+        itemStack.consume(1, livingEntity);
         livingEntity.gameEvent(GameEvent.DRINK);
-        return itemStack.consumeAndReturn(1, livingEntity);
+        if (itemStack.getCount() < 1) {
+            return new ItemStack(Items.GLASS_BOTTLE, 1); // Placeholder
+        }
+        if (player != null) {
+            player.addItem(new ItemStack(Items.GLASS_BOTTLE, 1)); // Placeholder
+        }
+        return itemStack;
     }
 }
